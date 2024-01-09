@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name        Show all Jira 9 comments (and more), in chronological order
 // @namespace   https://greasyfork.org/users/1047370
-// @description Clicks all 'show more' buttons, and clicks 'oldest first'. Works on Jira 9.4.5. Inspired by https://greasyfork.org/scripts/432731 (no external dependencies).
+// @description Clicks all 'show more' buttons, and (shift-)clicks 'oldest first'. Works on Jira 9.4.5. Inspired by https://greasyfork.org/scripts/432731 (no external dependencies).
 // @include     https://jira.*
 // @include     http://jira.*
 // @match       https://jira.*
 // @match       http://jira.*
-// @version     0.1
+// @version     0.2
 // @author      Marnix Klooster <marnix.klooster@gmail.com>
 // @copyright   public domain
 // @license     public domain
@@ -75,8 +75,11 @@ const useOldestFirstSorting = true; // if forcing sort order, whether to use 'ol
             }
             if (showmoreButtons.length > 0) {
                 clickedShowmoreButton = showmoreButtons[0];
-                console.log(`Clicking the button marked "${clickedShowmoreButton.innerText}"...`);
-                clickedShowmoreButton.click();
+                console.log(`Shift-clicking the button marked "${clickedShowmoreButton.innerText}"...`);
+                const shiftClickEvent = document.createEvent("Event");
+                shiftClickEvent.initEvent("click", true, true);
+                shiftClickEvent.shiftKey = true;
+                clickedShowmoreButton.dispatchEvent(shiftClickEvent);
                 return;
             }
  
@@ -102,3 +105,4 @@ const useOldestFirstSorting = true; // if forcing sort order, whether to use 'ol
  
     start();
 })();
+
